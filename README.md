@@ -1,2 +1,1 @@
-# Sticker-Portal
-Sticker Generation
+
