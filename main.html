@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Adjust alignment as needed */
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevents scrollbars */
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 columns */
+            gap: 20px; /* Gap between stickers */
+            padding: 20px;
+            max-width: 1200px; /* Adjust max width of grid */
+            margin: auto; /* Center align grid */
+        }
+        .info-box {
+            border: 2px solid #000;
+            padding: 20px;
+            width: 600px; /* Fixed width as per your requirement */
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box; /* Ensures padding and border are included in width */
+            position: relative; /* Ensure relative positioning for child elements */
+        }
+        .right-aligned-1, .right-aligned-2 {
+            text-align: right;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px; /* Space between lines */
+        }
+        .center-image {
+            max-width: 170px; /* Max width for the image */
+            height: auto; /* Maintain aspect ratio */
+            background-color: #ccc;
+            position: absolute;
+            right: 20px; /* 20px padding + 2px border + 5px gap */
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0px solid #000; /* Match the sticker border */
+        }
+        .form-container {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box; /* Ensures padding and border are included in width */
+            margin-top: 20px; /* Add margin to separate from stickers */
+            margin-left: 20px; /* Distance from stickers */
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="number"],
+        .form-container input[type="month"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Update Sticker</h2>
+        <form id="stickerForm">
+            <label for="code">Code:</label>
+            <input type="text" id="code" name="code" value="Product Code" required>
+
+            <label for="commodity">Commodity:</label>
+            <input type="text" id="commodity" name="commodity" value="Product Name" required>
+
+            <label for="mfg">Month & Year of Mfg:</label>
+            <input type="month" id="mfg" name="mfg" required>
+
+            <label for="mrp">MRP:</label>
+            <input type="number" id="mrp" name="mrp" value="0" required>
+
+            <label for="image-url">Image URL:</label>
+            <input type="text" id="image-url" name="image-url" value="Insert Image URL" required>
+
+            <button type="submit">Update Sticker</button>
+        </form>
+    </div>
+
+    <div class="grid-container" id="stickers">
+        <!-- Stickers will be dynamically generated here -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stickersContainer = document.getElementById('stickers');
+            const numStickers = 25; // Total number of stickers (5x5 grid)
+
+            // Loop to create each sticker
+            for (let i = 1; i <= numStickers; i++) {
+                const sticker = document.createElement('div');
+                sticker.classList.add('info-box');
+                sticker.id = `sticker${i}`;
+
+                sticker.innerHTML = `
+                    <img src="C:\Users\Paras\Downloads\Sticker Prototype\Euronics Logo.svg" alt="Euronics Logo" width="170">
+                    <div class="right-aligned-1">
+                        <span class="code_id">Code: <b style="font-size:20px" id="sticker${i}-code">EABC</b></span>
+                        <span class="code_id">Commodity: <span id="sticker${i}-commodity">Product Name</span></span>
+                    </div>
+                    <p>Month & Yr of Mfg: <span id="sticker${i}-mfg">January 2024</span></p>
+                    <p>Batch No: <span id="sticker${i}-batch">420201ABC</span>, Qty: 1 Pc</p>
+                    <p>MRP: Rs. <span id="sticker${i}-mrp">0</span>.00 (Incl all Taxes)</p>
+                    <p>Mktd By: Euronics Ind. P. Ltd.</p>
+                    <p>567 Udyog Vihar, Ph - 5, Gurgaon - 122016, Haryana</p>
+                    <p>Customer Care: 8010900300</p>
+                    <div class="right-aligned-2">
+                        <span>Email: in@euronics.co.in</span>
+                        <span>Website: www.euronics.co.in</span>
+                    </div>
+                    <img src="https://shopping.euronics.co.in/wp-content/uploads/2018/03/cropped-cropped-Euronics-logo.png" alt="Product Image" class="center-image" id="sticker${i}-image">
+                `;
+
+                stickersContainer.appendChild(sticker);
+            }
+        });
+
+        document.getElementById('stickerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get input values
+            const code = document.getElementById('code').value;
+            const commodity = document.getElementById('commodity').value;
+            const mfg = document.getElementById('mfg').value;
+            const mrp = document.getElementById('mrp').value;
+            const imageUrl = document.getElementById('image-url').value;
+
+            // Parse month and year from mfg input (format: yyyy-mm)
+            const mfgDate = new Date(mfg);
+            const mfgYear = mfgDate.getFullYear().toString().slice(-4); // Get last 4 digits and reverse
+            const mfgMonth = ('0' + (mfgDate.getMonth() + 1)).slice(-2); // Get 2-digit month
+
+            // Update sticker content for all stickers
+            for (let i = 1; i <= 25; i++) {
+                document.getElementById(`sticker${i}-code`).textContent = code;
+                document.getElementById(`sticker${i}-commodity`).textContent = commodity;
+                document.getElementById(`sticker${i}-mfg`).textContent = `${getMonthName(mfgMonth)} ${mfgYear}`;
+                document.getElementById(`sticker${i}-mrp`).textContent = mrp;
+                document.getElementById(`sticker${i}-image`).src = imageUrl;
+
+                // Update batch number
+                const batchNumber = `${mfgYear.split('').reverse().join('')}${mfgMonth}${code.substring(1)}`;
+                document.getElementById(`sticker${i}-batch`).textContent = batchNumber;
+            }
+        });
+
+        function getMonthName(month) {
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            return monthNames[parseInt(month, 10) - 1];
+        }
+    </script>
+</body>
+</html>
